@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>Javascript Web Speaker</title>
+        <script src="speaker.js"></script>
+    </head>
+    <body>
+        <h1>Javascript Web Speaker Demo</h1>
+
+        <section>
+            <label>Voice</label><select id="cfg-voice"></select>
+        </section>
+
+        <section id="player">
+            <article>
+                <textarea>Hello world !</textarea>
+                <button>Play</button>
+            </article>
+        </section>
+        
+        
+
+        <script>
+            //  Speaker
+            const domElements = {
+                text: document.querySelector('article textarea'),
+                playbutton: document.querySelector('article button')
+            }
+
+            let speaker = new SpeakerJS();
+            speaker.text = domElements.text.value;
+
+            domElements.playbutton.addEventListener("click", () => {
+                speaker.speak();
+            })
+            
+
+            //  Update Speaker settings
+            setTimeout(() => {
+                const select = document.querySelector("#cfg-voice");
+
+                //  Voice
+                const voices = speaker.getVoices();
+                voices.forEach((voice, index) => { select.innerHTML += `<option value='${index}'>${voice.name}</option>`;  });
+                select.addEventListener('change', (d) => {
+                    console.log("new voice selected = ", select.value);
+                    speaker.setVoice(voices[select.value])
+                });
+                //  Text
+                domElements.text.addEventListener('change', () => {
+                    speaker.text = domElements.text.value;
+                });
+
+            }, 150)
+            
+
+        </script>
+    </body>
+</html>
